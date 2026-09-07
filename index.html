@@ -1,1 +1,383 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#171717"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Minhas Viagens"><title>Minhas Viagens — V2</title><style>*{box-sizing:border-box}body{margin:0;background:#f5f3ef;color:#181818;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}.app{max-width:1080px;margin:auto;padding:18px 15px 90px}.top,.sectionhead{display:flex;align-items:center;justify-content:space-between;gap:12px}.top{margin-bottom:18px}.brand{font-size:27px;font-weight:850}.muted{color:#777;font-size:13px}.btn{border:1px solid #e2ded7;background:#fff;color:#181818;border-radius:11px;padding:10px 13px;font-weight:750;cursor:pointer}.primary{background:#171717;color:#fff;border-color:#171717}.danger{color:#a22;border-color:#ecc}.hero{background:#171717;color:#fff;border-radius:24px;padding:24px;margin-bottom:24px}.hero h1{margin:0 0 5px;font-size:30px}.hero p{margin:0;color:#bbb}.count{font-size:30px;font-weight:850;margin-top:17px}.hero small{color:#aaa}.section{margin-top:25px}.section h2{font-size:18px;margin:0}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}.trip,.profilecard,.triphead{background:#fff;border:1px solid #e3dfd8;border-radius:19px;padding:18px}.trip .emoji{font-size:32px}.trip h3{font-size:21px;margin:13px 0 4px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}.stat{background:#fff;border:1px solid #e3dfd8;border-radius:15px;padding:14px}.stat b{display:block;font-size:23px}.tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}.tag,.pill{background:#f1eee9;border-radius:999px;padding:7px 10px;font-size:12px}.modules{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.module{text-align:left;background:#fff;border:1px solid #e3dfd8;border-radius:15px;padding:15px;cursor:pointer}.module b{display:block;margin:8px 0 3px}.day{background:#fff;border:1px solid #e3dfd8;border-radius:16px;margin:9px 0;overflow:hidden}.day h3{margin:0;padding:12px 14px;background:#faf9f6}.event{display:grid;grid-template-columns:65px 1fr auto;gap:10px;padding:12px 14px;border-top:1px solid #eee}.event small{display:block;color:#777;margin-top:3px}.modal{display:none;position:fixed;inset:0;background:#0009;z-index:100;padding:12px;overflow:auto}.modal.open{display:block}.sheet{max-width:900px;margin:3vh auto;background:#fff;border-radius:21px;padding:19px}.sheethead{display:flex;justify-content:space-between;align-items:flex-start}.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.field{display:flex;flex-direction:column;gap:5px}.field.full{grid-column:1/-1}.field label{font-size:12px;font-weight:750;color:#666}.field input,.field textarea,.field select{border:1px solid #ddd;border-radius:9px;padding:10px;width:100%}.saved{border-top:1px solid #eee;margin-top:18px;padding-top:15px}.item{border:1px solid #eee;border-radius:11px;padding:10px;margin:7px 0;display:flex;gap:8px;align-items:flex-start}.itemmain{flex:1}.itemactions{display:flex;gap:6px}.notice{background:#f1eee9;border-radius:14px;padding:12px;font-size:13px;color:#5e574f;margin-top:12px}.view{display:none}.view.active{display:block}.empty{padding:18px;border:1px dashed #ccc;border-radius:13px;color:#777;text-align:center}.fab{position:fixed;bottom:15px;left:15px;background:#111;color:#fff;border:0;border-radius:14px;padding:13px 16px;font-weight:800;box-shadow:0 8px 25px #0003;z-index:90}@media(max-width:700px){.grid,.modules{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr 1fr}.fields{grid-template-columns:1fr}.field.full{grid-column:auto}.event{grid-template-columns:55px 1fr}.event .itemactions{grid-column:2}.hero h1{font-size:26px}}@media(max-width:480px){.grid,.modules{grid-template-columns:1fr}.brand{font-size:23px}.app{padding-left:12px;padding-right:12px}}</style></head><body><div class="app"><header class="top"><div><div class="brand">✈️ Minhas Viagens</div><div class="muted">Seu agente pessoal de viagens</div></div><button class="btn primary" id="newTrip">＋ Nova viagem</button></header><section id="home" class="view active"><div class="hero"><h1>Viaje melhor.</h1><p>Suas viagens, histórico e planejamento em um só lugar.</p><div class="count" id="count">—</div><small>até a chegada em Austin • 20/12/2026 às 18:00</small></div><div class="section"><div class="sectionhead"><h2>🧳 Minhas viagens</h2><button class="btn" id="addTrip">Adicionar</button></div><div id="trips" class="grid"></div></div><div class="section"><div class="sectionhead"><h2>👤 Perfil do viajante</h2><button class="btn" id="editProfile">Editar perfil</button></div><div id="profileCard" class="profilecard"></div></div></section><section id="trip" class="view"><button class="btn" id="back">← Minhas viagens</button><div id="triphead" style="margin-top:12px"></div><div class="section"><div class="sectionhead"><h2>O que você quer consultar?</h2><button class="btn" id="editTrip">Editar viagem</button></div><div id="modules" class="modules"></div></div><div class="section"><div class="sectionhead"><h2>🗓️ Roteiro</h2><button class="btn" id="addEvent">＋ Atividade</button></div><div id="timeline"></div></div></section></div><button class="fab" id="quick">✏️ Editar</button><div id="modal" class="modal"><div class="sheet"><div class="sheethead"><div><h2 id="mtitle" style="margin:0"></h2><div class="muted">As alterações ficam salvas neste navegador.</div></div><button class="btn" id="close">✕</button></div><div id="mbody"></div></div></div><script>const KEY='minhas_viagens_v2',OLD='minhas_viagens_v1';const deep=x=>JSON.parse(JSON.stringify(x));const base={profile:{originCity:'Londrina',originCountry:'Brasil',destinations:[]},trips:[{id:'texas',emoji:'🤠',name:'Texas 2026',dates:'20–24 dez. 2026',places:'Austin • Bandera',status:'Planejada',budget:0,it:[['20/12','18:00','✈️ Chegada em Austin','AUS → hotel'],['20/12','20:00','🍖 Jantar / BBQ',''],['21/12','09:00','☕ Café leve',''],['21/12','10:00','🏛️ Texas State Capitol',''],['21/12','12:00','👢 Botas + chapéu','Cavender’s / Boot Barn'],['21/12','14:30','🌆 South Congress',''],['21/12','18:00','🍖 BBQ',''],['21/12','20:00','💃 Country / Two-Step',''],['22/12','06:30','🛻 Austin → Bandera','~2h10'],['22/12','09:00','🐎 Cavalgada','Bandera Historical Rides'],['22/12','11:00','🍖 Almoço',''],['22/12','12:00','🤠 Main Street + lojas western','Souvenirs'],['22/12','15:00','🛻 Bandera → Austin','~2h'],['23/12','10:00','🔫 Shooting range',''],['23/12','14:00','🛍️ Tarde livre','Compras / descanso'],['23/12','20:00','🎸 Última noite country',''],['24/12','03:30','🛻 Hotel → aeroporto','AUS'],['24/12','06:00','✈️ AUS → Orlando','']],mods:{compras:[],gastos:[{item:'Passagem AUS → MCO',valor:2871.84,cat:'Passagem',obs:'1ª classe • 2 pessoas • 24/12/2026'},{item:'Holiday Inn Austin – Town Lake',valor:1667.50,cat:'Hotel',obs:'20–24/12/2026 • 4 noites • 2 pessoas'}],passeios:[],restaurantes:[],reservas:[],notas:[]}},{id:'carneiros',emoji:'🏖️',name:'Praia dos Carneiros 2026',dates:'19–26 out. 2026',places:'Pernambuco',status:'Planejada',budget:0,it:[['19/10','','✈️ Chegada',''],['20/10','','🏖️ Praia',''],['26/10','','✈️ Retorno','']],mods:{compras:[],gastos:[],passeios:[],restaurantes:[],reservas:[],notas:[]}}]};let db=(()=>{try{let v=JSON.parse(localStorage.getItem(KEY)||'null');if(v)return v;let o=JSON.parse(localStorage.getItem(OLD)||'null');if(o){let n=deep(base);n.trips=o.trips||n.trips;return n}return deep(base)}catch(e){return deep(base)}})();db.profile=db.profile||deep(base.profile);db.profile.destinations=db.profile.destinations||[];db.trips.forEach(t=>{t.mods=t.mods||{};['compras','gastos','passeios','restaurantes','reservas','notas'].forEach(k=>t.mods[k]=t.mods[k]||[]);t.it=t.it||[]});const tx=db.trips.find(t=>t.id==='texas');if(tx&&!tx.mods.gastos.some(x=>String(x.item).includes('AUS → MCO')))tx.mods.gastos.unshift(deep(base.trips[0].mods.gastos[0]));if(tx&&!tx.mods.gastos.some(x=>String(x.item).includes('Holiday Inn')))tx.mods.gastos.push(deep(base.trips[0].mods.gastos[1]));const $=x=>document.getElementById(x),save=()=>localStorage.setItem(KEY,JSON.stringify(db)),esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));let cur=null,modal=$('modal');function show(id){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');scrollTo(0,0)}function openM(t,b){$('mtitle').textContent=t;$('mbody').innerHTML=b;modal.classList.add('open')}$('close').onclick=()=>modal.classList.remove('open');modal.onclick=e=>{if(e.target===modal)modal.classList.remove('open')};function tick(){let ms=Math.max(0,new Date('2026-12-20T18:00:00-06:00')-new Date()),d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4);$('count').textContent=d+'d '+String(h).padStart(2,'0')+'h '+String(m).padStart(2,'0')+'m'}tick();setInterval(tick,30000);function prof(){let d=db.profile.destinations,c=new Set(d.map(x=>x.country.toLowerCase())).size,h=d.reduce((s,x)=>s+(+x.flightHours||0),0);return{d,c,h,avg:d.length?h/d.length:0}}function home(){let p=prof();$('trips').innerHTML=db.trips.map(t=>`<article class="trip"><div class="emoji">${t.emoji}</div><h3>${esc(t.name)}</h3><div class="muted">${esc(t.dates)} • ${esc(t.places)}</div><button class="btn" style="margin-top:14px" data-open="${t.id}">Abrir viagem →</button></article>`).join('');document.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>openTrip(b.dataset.open));$('profileCard').innerHTML=`<b style="font-size:20px">🌎 Seu histórico de viajante</b><p class="muted">Origem padrão: <b>${esc(db.profile.originCity)}, ${esc(db.profile.originCountry)}</b></p><div class="stats"><div class="stat"><b>${p.c}</b><span>Países</span></div><div class="stat"><b>${p.d.length}</b><span>Cidades</span></div><div class="stat"><b>${p.h.toFixed(1)}h</b><span>Horas estimadas</span></div><div class="stat"><b>${p.avg.toFixed(1)}h</b><span>Média por destino</span></div></div><div class="tags">${p.d.map(x=>`<span class="tag">📍 ${esc(x.city)}, ${esc(x.country)} • ${(+x.flightHours||0).toFixed(1)}h</span>`).join('')}</div>`}function openTrip(id){cur=db.trips.find(t=>t.id===id);renderTrip();show('trip')}const defs={compras:['🛍️','Compras',[['item','Item'],['preco','Preço estimado'],['loja','Loja'],['obs','Observações']]],gastos:['💰','Gastos',[['item','Descrição'],['valor','Valor'],['cat','Categoria'],['obs','Observações']]],passeios:['🎟️','Passeios',[['item','Passeio'],['data','Data / horário'],['preco','Preço'],['obs','Observações']]],restaurantes:['🍖','Comida',[['item','Lugar'],['data','Data / horário'],['orc','Orçamento'],['obs','Observações']]],reservas:['📌','Reservas',[['item','Reserva'],['data','Data / horário'],['codigo','Código / localizador'],['obs','Observações']]],notas:['📝','Anotações',[['item','Título'],['obs','Anotação']]]};function renderTrip(){let total=cur.mods.gastos.reduce((s,x)=>s+(+x.valor||0),0);$('triphead').innerHTML=`<div class="triphead"><div style="font-size:34px">${cur.emoji}</div><h1>${esc(cur.name)}</h1><div class="muted">${esc(cur.dates)} • ${esc(cur.places)}</div><div class="tags"><span class="pill">💰 Confirmado: R$ ${total.toLocaleString('pt-BR',{minimumFractionDigits:2})}</span><span class="pill">${cur.mods.gastos.length} gasto(s)</span></div></div>`;$('modules').innerHTML=Object.entries(defs).map(([k,v])=>`<button class="module" data-mod="${k}"><span style="font-size:24px">${v[0]}</span><b>${v[1]}</b><span>${cur.mods[k].length} item(ns)</span></button>`).join('');document.querySelectorAll('[data-mod]').forEach(b=>b.onclick=()=>module(b.dataset.mod));let g={};cur.it.forEach((e,i)=>(g[e[0]]??=[]).push({e,i}));$('timeline').innerHTML=Object.entries(g).map(([d,a])=>`<div class="day"><h3>${esc(d)}</h3>${a.map(({e,i})=>`<div class="event"><b>${esc(e[1])}</b><div><b>${esc(e[2])}</b><small>${esc(e[3])}</small></div><div class="itemactions"><button class="btn" data-edit-event="${i}">Editar</button></div></div>`).join('')}</div>`).join('')||'<div class="empty">Nenhuma atividade.</div>';document.querySelectorAll('[data-edit-event]').forEach(b=>b.onclick=()=>editEvent(+b.dataset.editEvent))}function module(k){let c=defs[k][2],a=cur.mods[k];openM(defs[k][0]+' '+defs[k][1],`<form id="mf"><div class="fields">${c.map(f=>`<div class="field ${f[0]==='obs'?'full':''}"><label>${f[1]}</label>${f[0]==='obs'?`<textarea name="${f[0]}" rows="3"></textarea>`:`<input name="${f[0]}" ${f[0]==='valor'||f[0]==='preco'?'type="number" step="0.01"':''}>`}</div>`).join('')}</div><button class="btn primary" style="margin-top:12px">＋ Adicionar</button></form><div class="saved"><b>Itens salvos</b>${a.length?a.map((x,i)=>`<div class="item"><div class="itemmain"><b>${esc(x[c[0][0]]||'Sem título')}</b><div class="muted">${c.slice(1).map(f=>x[f[0]]).filter(Boolean).map(esc).join(' • ')}</div></div><div class="itemactions"><button class="btn" data-e="${i}">Editar</button><button class="btn danger" data-d="${i}">Excluir</button></div></div>`).join(''):'<p class="muted">Nenhum item.</p>'}</div>`);$('mf').onsubmit=e=>{e.preventDefault();let x={};new FormData(e.target).forEach((v,n)=>x[n]=v);a.push(x);save();renderTrip();module(k)};document.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{a.splice(+b.dataset.d,1);save();renderTrip();module(k)});document.querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>editMod(k,+b.dataset.e))}function editMod(k,i){let c=defs[k][2],x=cur.mods[k][i];openM('Editar '+defs[k][1],`<form id="ef"><div class="fields">${c.map(f=>`<div class="field ${f[0]==='obs'?'full':''}"><label>${f[1]}</label>${f[0]==='obs'?`<textarea name="${f[0]}" rows="4">${esc(x[f[0]]||'')}</textarea>`:`<input name="${f[0]}" value="${esc(x[f[0]]||'')}">`}</div>`).join('')}</div><button class="btn primary" style="margin-top:12px">Salvar</button></form>`);$('ef').onsubmit=e=>{e.preventDefault();let n={};new FormData(e.target).forEach((v,z)=>n[z]=v);cur.mods[k][i]=n;save();modal.classList.remove('open');renderTrip()}}function editEvent(i){let x=cur.it[i];openM('Editar atividade',`<form id="rf"><div class="fields"><div class="field"><label>Data</label><input name="date" value="${esc(x[0])}"></div><div class="field"><label>Horário</label><input name="time" value="${esc(x[1])}"></div><div class="field"><label>Atividade</label><input name="title" value="${esc(x[2])}"></div><div class="field"><label>Observação</label><input name="note" value="${esc(x[3])}"></div></div><button class="btn primary" style="margin-top:12px">Salvar</button> <button type="button" class="btn danger" id="delEvent">Excluir</button></form>`);$('rf').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target);cur.it[i]=[f.get('date'),f.get('time'),f.get('title'),f.get('note')];save();modal.classList.remove('open');renderTrip()};$('delEvent').onclick=()=>{cur.it.splice(i,1);save();modal.classList.remove('open');renderTrip()}}function addEvent(){if(!cur)return;openM('＋ Nova atividade',`<form id="af"><div class="fields"><div class="field"><label>Data</label><input name="date"></div><div class="field"><label>Horário</label><input name="time"></div><div class="field"><label>Atividade</label><input name="title"></div><div class="field"><label>Observação</label><input name="note"></div></div><button class="btn primary" style="margin-top:12px">Adicionar</button></form>`);$('af').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target);cur.it.push([f.get('date'),f.get('time'),f.get('title'),f.get('note')]);save();modal.classList.remove('open');renderTrip()}}async function geocode(city,country){try{let r=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=10&language=pt&format=json`),j=await r.json(),rs=j.results||[],x=rs.find(z=>country&&String(z.country||'').toLowerCase().includes(country.toLowerCase()))||rs[0];return x?{lat:x.latitude,lon:x.longitude}:null}catch(e){return null}}function hav(a,b){let R=6371,la=(b.lat-a.lat)*Math.PI/180,lo=(b.lon-a.lon)*Math.PI/180,A=Math.sin(la/2)**2+Math.cos(a.lat*Math.PI/180)*Math.cos(b.lat*Math.PI/180)*Math.sin(lo/2)**2;return 2*R*Math.asin(Math.sqrt(A))}async function estimate(fromCity,fromCountry,toCity,toCountry){let[a,b]=await Promise.all([geocode(fromCity,fromCountry),geocode(toCity,toCountry)]);if(!a||!b)return{hours:0,km:0};let km=hav(a,b);return{hours:Math.max(.7,km/800+.4),km}}function editProfile(){let p=db.profile;openM('👤 Perfil do viajante',`<div class="notice">Defina sua origem padrão e adicione cidades/países que você já visitou. O app estima o tempo de voo usando a distância geográfica; é uma referência aproximada, não o tempo real de cada itinerário.</div><form id="pf"><div class="fields"><div class="field"><label>Origem padrão</label><input name="originCity" value="${esc(p.originCity||'')}"></div><div class="field"><label>País da origem</label><input name="originCountry" value="${esc(p.originCountry||'Brasil')}"></div></div><button class="btn primary" style="margin-top:12px">Salvar origem</button></form><div class="saved"><b>🌎 Cidades visitadas</b><form id="df"><div class="fields"><div class="field"><label>Cidade visitada</label><input name="city" required></div><div class="field"><label>País</label><input name="country" required></div><div class="field"><label>Origem desta viagem</label><input name="fromCity" value="${esc(p.originCity||'')}"></div><div class="field"><label>País da origem</label><input name="fromCountry" value="${esc(p.originCountry||'Brasil')}"></div></div><button class="btn" id="addDest" style="margin-top:12px">＋ Adicionar e estimar voo</button></form><div id="destList"></div></div>`);destList();$('pf').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target);p.originCity=f.get('originCity');p.originCountry=f.get('originCountry');save();home()};$('df').onsubmit=async e=>{e.preventDefault();let f=new FormData(e.target),b=$('addDest');b.disabled=true;b.textContent='Calculando…';let city=f.get('city'),country=f.get('country'),fromCity=f.get('fromCity')||p.originCity,fromCountry=f.get('fromCountry')||p.originCountry,r=await estimate(fromCity,fromCountry,city,country);p.destinations.push({city,country,fromCity,fromCountry,flightHours:r.hours,distanceKm:r.km});save();b.disabled=false;b.textContent='＋ Adicionar e estimar voo';e.target.reset();destList();home()}}function destList(){let p=db.profile,l=$('destList');if(!l)return;l.innerHTML=p.destinations.length?p.destinations.map((x,i)=>`<div class="item"><div class="itemmain"><b>📍 ${esc(x.city)}, ${esc(x.country)}</b><div class="muted">${esc(x.fromCity)} → ${esc(x.city)} • ${(+x.flightHours||0).toFixed(1)}h estimadas${x.distanceKm?` • ${Math.round(x.distanceKm).toLocaleString('pt-BR')} km`:''}</div></div><button class="btn danger" data-dd="${i}">Excluir</button></div>`).join(''):'<p class="muted">Nenhuma cidade cadastrada.</p>';document.querySelectorAll('[data-dd]').forEach(b=>b.onclick=()=>{p.destinations.splice(+b.dataset.dd,1);save();destList();home()})}function editTrip(){if(!cur)return;openM('Editar viagem',`<form id="tf"><div class="fields"><div class="field"><label>Nome</label><input name="name" value="${esc(cur.name)}"></div><div class="field"><label>Emoji</label><input name="emoji" value="${esc(cur.emoji)}"></div><div class="field"><label>Datas</label><input name="dates" value="${esc(cur.dates)}"></div><div class="field"><label>Destino(s)</label><input name="places" value="${esc(cur.places)}"></div><div class="field"><label>Orçamento</label><input name="budget" type="number" value="${cur.budget||0}"></div></div><button class="btn primary" style="margin-top:12px">Salvar</button></form>`);$('tf').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target);cur.name=f.get('name');cur.emoji=f.get('emoji');cur.dates=f.get('dates');cur.places=f.get('places');cur.budget=+f.get('budget')||0;save();modal.classList.remove('open');home();renderTrip()}}function newTrip(){openM('＋ Nova viagem',`<form id="nf"><div class="fields"><div class="field"><label>Nome</label><input name="name" required></div><div class="field"><label>Emoji</label><input name="emoji" value="✈️"></div><div class="field"><label>Datas</label><input name="dates"></div><div class="field"><label>Destino(s)</label><input name="places"></div></div><button class="btn primary" style="margin-top:12px">Criar viagem</button></form>`);$('nf').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target),t={id:'t'+Date.now(),name:f.get('name'),emoji:f.get('emoji')||'✈️',dates:f.get('dates'),places:f.get('places'),status:'Planejada',budget:0,it:[],mods:{compras:[],gastos:[],passeios:[],restaurantes:[],reservas:[],notas:[]}};db.trips.push(t);save();modal.classList.remove('open');home();openTrip(t.id)}}$('newTrip').onclick=newTrip;$('addTrip').onclick=newTrip;$('editProfile').onclick=editProfile;$('back').onclick=()=>{show('home');home()};$('editTrip').onclick=editTrip;$('addEvent').onclick=addEvent;$('quick').onclick=()=>cur?editTrip():editProfile();home();</script></body></html>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#171717">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Minhas Viagens">
+<title>Minhas Viagens — V2.1</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f5f3ef;color:#181818;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+.app{max-width:1080px;margin:auto;padding:18px 15px 90px}
+.top,.sectionhead{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.top{margin-bottom:18px}.brand{font-size:27px;font-weight:850}.muted{color:#777;font-size:13px}
+.btn{border:1px solid #e2ded7;background:#fff;color:#181818;border-radius:11px;padding:10px 13px;font-weight:750;cursor:pointer}
+.primary{background:#171717;color:#fff;border-color:#171717}.danger{color:#a22;border-color:#ecc}
+.hero{background:#171717;color:#fff;border-radius:24px;padding:24px;margin-bottom:24px}
+.hero h1{margin:0 0 5px;font-size:30px}.hero p{margin:0;color:#bbb}.count{font-size:30px;font-weight:850;margin-top:17px}.hero small{color:#aaa}
+.section{margin-top:25px}.section h2{font-size:18px;margin:0}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
+.trip,.profilecard,.triphead{background:#fff;border:1px solid #e3dfd8;border-radius:19px;padding:18px}
+.trip .emoji{font-size:32px}.trip h3{font-size:21px;margin:13px 0 4px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+.stat{background:#fff;border:1px solid #e3dfd8;border-radius:15px;padding:14px}.stat b{display:block;font-size:23px}
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}.tag,.pill{background:#f1eee9;border-radius:999px;padding:7px 10px;font-size:12px}
+.modules{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.module{text-align:left;background:#fff;border:1px solid #e3dfd8;border-radius:15px;padding:15px;cursor:pointer}
+.module b{display:block;margin:8px 0 3px}
+.day{background:#fff;border:1px solid #e3dfd8;border-radius:16px;margin:9px 0;overflow:hidden}.day h3{margin:0;padding:12px 14px;background:#faf9f6}
+.event{display:grid;grid-template-columns:65px 1fr auto;gap:10px;padding:12px 14px;border-top:1px solid #eee}.event small{display:block;color:#777;margin-top:3px}
+.modal{display:none;position:fixed;inset:0;background:#0009;z-index:100;padding:12px;overflow:auto}.modal.open{display:block}
+.sheet{max-width:900px;margin:3vh auto;background:#fff;border-radius:21px;padding:19px}.sheethead{display:flex;justify-content:space-between;align-items:flex-start}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.field{display:flex;flex-direction:column;gap:5px}.field.full{grid-column:1/-1}
+.field label{font-size:12px;font-weight:750;color:#666}.field input,.field textarea,.field select{border:1px solid #ddd;border-radius:9px;padding:10px;width:100%}
+.saved{border-top:1px solid #eee;margin-top:18px;padding-top:15px}.item{border:1px solid #eee;border-radius:11px;padding:10px;margin:7px 0;display:flex;gap:8px;align-items:flex-start}
+.itemmain{flex:1}.itemactions{display:flex;gap:6px}.notice{background:#f1eee9;border-radius:14px;padding:12px;font-size:13px;color:#5e574f;margin-top:12px}
+.view{display:none}.view.active{display:block}.empty{padding:18px;border:1px dashed #ccc;border-radius:13px;color:#777;text-align:center}
+.fab{position:fixed;bottom:15px;left:15px;background:#111;color:#fff;border:0;border-radius:14px;padding:13px 16px;font-weight:800;box-shadow:0 8px 25px #0003;z-index:90}
+.transport-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.transport-toggle label{border:1px solid #ddd;border-radius:12px;padding:12px;cursor:pointer}.transport-toggle input{margin-right:7px}
+@media(max-width:700px){.grid,.modules{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr 1fr}.fields{grid-template-columns:1fr}.field.full{grid-column:auto}.event{grid-template-columns:55px 1fr}.event .itemactions{grid-column:2}.hero h1{font-size:26px}}
+@media(max-width:480px){.grid,.modules{grid-template-columns:1fr}.brand{font-size:23px}.app{padding-left:12px;padding-right:12px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top">
+  <div><div class="brand">✈️ Minhas Viagens</div><div class="muted">Seu agente pessoal de viagens</div></div>
+  <button class="btn primary" id="newTrip">＋ Nova viagem</button>
+</header>
+
+<section id="home" class="view active">
+  <div class="hero">
+    <h1 id="heroTitle">Próxima viagem</h1>
+    <p id="heroTrip">—</p>
+    <div class="count" id="count">—</div>
+    <small id="heroMeta">Cadastre a data de início da viagem</small>
+  </div>
+
+  <div class="section">
+    <div class="sectionhead"><h2>🧳 Minhas viagens</h2><button class="btn" id="addTrip">Adicionar</button></div>
+    <div id="trips" class="grid"></div>
+  </div>
+
+  <div class="section">
+    <div class="sectionhead"><h2>👤 Perfil do viajante</h2><button class="btn" id="editProfile">Editar perfil</button></div>
+    <div id="profileCard" class="profilecard"></div>
+  </div>
+</section>
+
+<section id="trip" class="view">
+  <button class="btn" id="back">← Minhas viagens</button>
+  <div id="triphead" style="margin-top:12px"></div>
+  <div class="section">
+    <div class="sectionhead"><h2>O que você quer consultar?</h2><button class="btn" id="editTrip">Editar viagem</button></div>
+    <div id="modules" class="modules"></div>
+  </div>
+  <div class="section">
+    <div class="sectionhead"><h2>🗓️ Roteiro</h2><button class="btn" id="addEvent">＋ Atividade</button></div>
+    <div id="timeline"></div>
+  </div>
+</section>
+</div>
+
+<button class="fab" id="quick">✏️ Editar</button>
+
+<div id="modal" class="modal">
+  <div class="sheet">
+    <div class="sheethead">
+      <div><h2 id="mtitle" style="margin:0"></h2><div class="muted">As alterações ficam salvas neste navegador.</div></div>
+      <button class="btn" id="close">✕</button>
+    </div>
+    <div id="mbody"></div>
+  </div>
+</div>
+
+<script>
+const KEY='minhas_viagens_v2', OLD='minhas_viagens_v1';
+const deep=x=>JSON.parse(JSON.stringify(x));
+const base={
+  profile:{originCity:'Londrina',originCountry:'Brasil',destinations:[]},
+  trips:[
+    {
+      id:'texas',emoji:'🤠',name:'Texas 2026',dates:'20–24 dez. 2026',places:'Austin • Bandera',
+      startDate:'2026-12-20T18:00',status:'Planejada',budget:0,
+      it:[
+        ['20/12','18:00','✈️ Chegada em Austin','AUS → hotel'],['20/12','20:00','🍖 Jantar / BBQ',''],
+        ['21/12','09:00','☕ Café leve',''],['21/12','10:00','🏛️ Texas State Capitol',''],
+        ['21/12','12:00','👢 Botas + chapéu','Cavender’s / Boot Barn'],['21/12','14:30','🌆 South Congress',''],
+        ['21/12','18:00','🍖 BBQ',''],['21/12','20:00','💃 Country / Two-Step',''],
+        ['22/12','06:30','🛻 Austin → Bandera','~2h10'],['22/12','09:00','🐎 Cavalgada','Bandera Historical Rides'],
+        ['22/12','11:00','🍖 Almoço',''],['22/12','12:00','🤠 Main Street + lojas western','Souvenirs'],
+        ['22/12','15:00','🛻 Bandera → Austin','~2h'],['23/12','10:00','🔫 Shooting range',''],
+        ['23/12','14:00','🛍️ Tarde livre','Compras / descanso'],['23/12','20:00','🎸 Última noite country',''],
+        ['24/12','03:30','🛻 Hotel → aeroporto','AUS'],['24/12','06:00','✈️ AUS → Orlando','']
+      ],
+      mods:{compras:[],gastos:[
+        {item:'Passagem AUS → MCO',valor:2871.84,cat:'Passagem',obs:'1ª classe • 2 pessoas • 24/12/2026'},
+        {item:'Holiday Inn Austin – Town Lake',valor:1667.00,cat:'Hotel',obs:'20–24/12/2026 • 4 noites • 2 pessoas'}
+      ],passeios:[],restaurantes:[],reservas:[],notas:[]}
+    },
+    {
+      id:'carneiros',emoji:'🏖️',name:'Praia dos Carneiros 2026',dates:'19–26 out. 2026',places:'Pernambuco',
+      startDate:'2026-10-19T08:00',status:'Planejada',budget:0,
+      it:[['19/10','','✈️ Chegada',''],['20/10','','🏖️ Praia',''],['26/10','','✈️ Retorno','']],
+      mods:{compras:[],gastos:[],passeios:[],restaurantes:[],reservas:[],notas:[]}
+    }
+  ]
+};
+
+let db=(()=>{
+  try{
+    let v=JSON.parse(localStorage.getItem(KEY)||'null');
+    if(v) return v;
+    let o=JSON.parse(localStorage.getItem(OLD)||'null');
+    if(o){let n=deep(base);n.trips=o.trips||n.trips;return n}
+    return deep(base);
+  }catch(e){return deep(base)}
+})();
+
+db.profile=db.profile||deep(base.profile);
+db.profile.destinations=db.profile.destinations||[];
+db.trips.forEach(t=>{
+  t.mods=t.mods||{};
+  ['compras','gastos','passeios','restaurantes','reservas','notas'].forEach(k=>t.mods[k]=t.mods[k]||[]);
+  t.it=t.it||[];
+  if(!t.startDate){
+    if(t.id==='texas') t.startDate='2026-12-20T18:00';
+    if(t.id==='carneiros') t.startDate='2026-10-19T08:00';
+  }
+});
+const tx=db.trips.find(t=>t.id==='texas');
+if(tx&&!tx.mods.gastos.some(x=>String(x.item).includes('AUS → MCO'))) tx.mods.gastos.unshift(deep(base.trips[0].mods.gastos[0]));
+if(tx&&!tx.mods.gastos.some(x=>String(x.item).includes('Holiday Inn'))) tx.mods.gastos.push(deep(base.trips[0].mods.gastos[1]));
+
+const $=x=>document.getElementById(x);
+const save=()=>localStorage.setItem(KEY,JSON.stringify(db));
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+let cur=null, modal=$('modal');
+
+function show(id){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');scrollTo(0,0)}
+function openM(t,b){$('mtitle').textContent=t;$('mbody').innerHTML=b;modal.classList.add('open')}
+$('close').onclick=()=>modal.classList.remove('open');
+modal.onclick=e=>{if(e.target===modal)modal.classList.remove('open')};
+
+function nextTrip(){
+  const now=Date.now();
+  return db.trips
+    .map(t=>({t,ts:t.startDate?new Date(t.startDate).getTime():NaN}))
+    .filter(x=>Number.isFinite(x.ts)&&x.ts>now)
+    .sort((a,b)=>a.ts-b.ts)[0]||null;
+}
+function tick(){
+  const n=nextTrip();
+  if(!n){
+    $('heroTitle').textContent='Próxima viagem';
+    $('heroTrip').textContent='Nenhuma viagem futura com data definida';
+    $('count').textContent='—';
+    $('heroMeta').textContent='Adicione a data de início em uma viagem.';
+    return;
+  }
+  let ms=Math.max(0,n.ts-Date.now()),d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4);
+  $('heroTitle').textContent='Próxima viagem';
+  $('heroTrip').textContent=`${n.t.emoji||'✈️'} ${n.t.name}`;
+  $('count').textContent=d+'d '+String(h).padStart(2,'0')+'h '+String(m).padStart(2,'0')+'m';
+  const dt=new Date(n.ts);
+  $('heroMeta').textContent='até '+dt.toLocaleString('pt-BR',{dateStyle:'long',timeStyle:'short'});
+}
+tick(); setInterval(tick,30000);
+
+function prof(){
+  let d=db.profile.destinations;
+  let countries=new Set(d.map(x=>String(x.country||'').trim().toLowerCase()).filter(Boolean)).size;
+  let flightHours=d.filter(x=>x.transport==='flight'||(!x.transport&&x.flightHours)).reduce((s,x)=>s+(+x.flightHours||0),0);
+  let roadKm=d.filter(x=>x.transport==='car').reduce((s,x)=>s+(+x.roadKm||0),0);
+  return{d,countries,flightHours,roadKm};
+}
+
+function home(){
+  let p=prof();
+  $('trips').innerHTML=db.trips.map(t=>`<article class="trip">
+    <div class="emoji">${t.emoji}</div><h3>${esc(t.name)}</h3>
+    <div class="muted">${esc(t.dates)} • ${esc(t.places)}</div>
+    ${t.startDate?`<div class="muted" style="margin-top:5px">📅 início: ${new Date(t.startDate).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'})}</div>`:''}
+    <button class="btn" style="margin-top:14px" data-open="${t.id}">Abrir viagem →</button>
+  </article>`).join('');
+  document.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>openTrip(b.dataset.open));
+
+  $('profileCard').innerHTML=`<b style="font-size:20px">🌎 Seu histórico de viajante</b>
+    <p class="muted">Origem padrão: <b>${esc(db.profile.originCity)}, ${esc(db.profile.originCountry)}</b></p>
+    <div class="stats">
+      <div class="stat"><b>${p.countries}</b><span>Países</span></div>
+      <div class="stat"><b>${p.d.length}</b><span>Cidades</span></div>
+      <div class="stat"><b>${p.flightHours.toFixed(1)}h</b><span>Horas de voo</span></div>
+      <div class="stat"><b>${Math.round(p.roadKm).toLocaleString('pt-BR')} km</b><span>Viagens de carro</span></div>
+    </div>
+    <div class="tags">${p.d.map(x=>`<span class="tag">${x.transport==='car'?'🚗':'✈️'} ${esc(x.city)}, ${esc(x.country)} • ${x.transport==='car'?`${Math.round(+x.roadKm||0).toLocaleString('pt-BR')} km`:`${(+x.flightHours||0).toFixed(1)}h`}</span>`).join('')}</div>`;
+  tick();
+}
+
+function openTrip(id){cur=db.trips.find(t=>t.id===id);renderTrip();show('trip')}
+
+const defs={
+  compras:['🛍️','Compras',[['item','Item'],['preco','Preço estimado'],['loja','Loja'],['obs','Observações']]],
+  gastos:['💰','Gastos',[['item','Descrição'],['valor','Valor'],['cat','Categoria'],['obs','Observações']]],
+  passeios:['🎟️','Passeios',[['item','Passeio'],['data','Data / horário'],['preco','Preço'],['obs','Observações']]],
+  restaurantes:['🍖','Comida',[['item','Lugar'],['data','Data / horário'],['orc','Orçamento'],['obs','Observações']]],
+  reservas:['📌','Reservas',[['item','Reserva'],['data','Data / horário'],['obs','Observações']]],
+  notas:['📝','Anotações',[['item','Título'],['obs','Anotação']]]
+};
+
+function renderTrip(){
+  let total=cur.mods.gastos.reduce((s,x)=>s+(+x.valor||0),0);
+  $('triphead').innerHTML=`<div class="triphead"><div style="font-size:34px">${cur.emoji}</div><h1>${esc(cur.name)}</h1>
+    <div class="muted">${esc(cur.dates)} • ${esc(cur.places)}</div>
+    <div class="tags"><span class="pill">💰 Confirmado: R$ ${total.toLocaleString('pt-BR',{minimumFractionDigits:2})}</span><span class="pill">${cur.mods.gastos.length} gasto(s)</span></div></div>`;
+  $('modules').innerHTML=Object.entries(defs).map(([k,v])=>`<button class="module" data-mod="${k}"><span style="font-size:24px">${v[0]}</span><b>${v[1]}</b><span>${cur.mods[k].length} item(ns)</span></button>`).join('');
+  document.querySelectorAll('[data-mod]').forEach(b=>b.onclick=()=>module(b.dataset.mod));
+  let g={};cur.it.forEach((e,i)=>(g[e[0]]??=[]).push({e,i}));
+  $('timeline').innerHTML=Object.entries(g).map(([d,a])=>`<div class="day"><h3>${esc(d)}</h3>${a.map(({e,i})=>`<div class="event"><b>${esc(e[1])}</b><div><b>${esc(e[2])}</b><small>${esc(e[3])}</small></div><div class="itemactions"><button class="btn" data-edit-event="${i}">Editar</button></div></div>`).join('')}</div>`).join('')||'<div class="empty">Nenhuma atividade.</div>';
+  document.querySelectorAll('[data-edit-event]').forEach(b=>b.onclick=()=>editEvent(+b.dataset.editEvent));
+}
+
+function module(k){
+  let c=defs[k][2],a=cur.mods[k];
+  openM(defs[k][0]+' '+defs[k][1],`<form id="mf"><div class="fields">${c.map(f=>`<div class="field ${f[0]==='obs'?'full':''}"><label>${f[1]}</label>${f[0]==='obs'?`<textarea name="${f[0]}" rows="3"></textarea>`:`<input name="${f[0]}" ${f[0]==='valor'||f[0]==='preco'?'type="number" step="0.01"':''}>`}</div>`).join('')}</div><button class="btn primary" style="margin-top:12px">＋ Adicionar</button></form>
+    <div class="saved"><b>Itens salvos</b>${a.length?a.map((x,i)=>`<div class="item"><div class="itemmain"><b>${esc(x[c[0][0]]||'Sem título')}</b><div class="muted">${c.slice(1).map(f=>x[f[0]]).filter(Boolean).map(esc).join(' • ')}</div></div><div class="itemactions"><button class="btn" data-e="${i}">Editar</button><button class="btn danger" data-d="${i}">Excluir</button></div></div>`).join(''):'<p class="muted">Nenhum item.</p>'}</div>`);
+  $('mf').onsubmit=e=>{e.preventDefault();let x={};new FormData(e.target).forEach((v,n)=>x[n]=v);a.push(x);save();renderTrip();module(k)};
+  document.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{a.splice(+b.dataset.d,1);save();renderTrip();module(k)});
+  document.querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>editMod(k,+b.dataset.e));
+}
+
+function editMod(k,i){
+  let c=defs[k][2],x=cur.mods[k][i];
+  openM('Editar '+defs[k][1],`<form id="ef"><div class="fields">${c.map(f=>`<div class="field ${f[0]==='obs'?'full':''}"><label>${f[1]}</label>${f[0]==='obs'?`<textarea name="${f[0]}" rows="4">${esc(x[f[0]]||'')}</textarea>`:`<input name="${f[0]}" value="${esc(x[f[0]]||'')}">`}</div>`).join('')}</div><button class="btn primary" style="margin-top:12px">Salvar</button></form>`);
+  $('ef').onsubmit=e=>{e.preventDefault();let n={};new FormData(e.target).forEach((v,z)=>n[z]=v);cur.mods[k][i]=n;save();modal.classList.remove('open');renderTrip()};
+}
+
+function editEvent(i){
+  let x=cur.it[i];
+  openM('Editar atividade',`<form id="rf"><div class="fields"><div class="field"><label>Data</label><input name="date" value="${esc(x[0])}"></div><div class="field"><label>Horário</label><input name="time" value="${esc(x[1])}"></div><div class="field"><label>Atividade</label><input name="title" value="${esc(x[2])}"></div><div class="field"><label>Observação</label><input name="note" value="${esc(x[3])}"></div></div><button class="btn primary" style="margin-top:12px">Salvar</button> <button type="button" class="btn danger" id="delEvent">Excluir</button></form>`);
+  $('rf').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target);cur.it[i]=[f.get('date'),f.get('time'),f.get('title'),f.get('note')];save();modal.classList.remove('open');renderTrip()};
+  $('delEvent').onclick=()=>{cur.it.splice(i,1);save();modal.classList.remove('open');renderTrip()};
+}
+
+function addEvent(){
+  if(!cur)return;
+  openM('＋ Nova atividade',`<form id="af"><div class="fields"><div class="field"><label>Data</label><input name="date"></div><div class="field"><label>Horário</label><input name="time"></div><div class="field"><label>Atividade</label><input name="title"></div><div class="field"><label>Observação</label><input name="note"></div></div><button class="btn primary" style="margin-top:12px">Adicionar</button></form>`);
+  $('af').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target);cur.it.push([f.get('date'),f.get('time'),f.get('title'),f.get('note')]);save();modal.classList.remove('open');renderTrip()};
+}
+
+async function geocode(city,country){
+  try{
+    let r=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=10&language=pt&format=json`);
+    let j=await r.json(),rs=j.results||[];
+    let x=rs.find(z=>country&&String(z.country||'').toLowerCase().includes(country.toLowerCase()))||rs[0];
+    return x?{lat:x.latitude,lon:x.longitude}:null;
+  }catch(e){return null}
+}
+function hav(a,b){
+  let R=6371,la=(b.lat-a.lat)*Math.PI/180,lo=(b.lon-a.lon)*Math.PI/180;
+  let A=Math.sin(la/2)**2+Math.cos(a.lat*Math.PI/180)*Math.cos(b.lat*Math.PI/180)*Math.sin(lo/2)**2;
+  return 2*R*Math.asin(Math.sqrt(A));
+}
+async function estimateFlight(fromCity,fromCountry,toCity,toCountry){
+  let[a,b]=await Promise.all([geocode(fromCity,fromCountry),geocode(toCity,toCountry)]);
+  if(!a||!b)return{hours:0,km:0};
+  let km=hav(a,b);
+  return{hours:Math.max(.7,km/800+.4),km};
+}
+async function estimateRoad(fromCity,fromCountry,toCity,toCountry){
+  let[a,b]=await Promise.all([geocode(fromCity,fromCountry),geocode(toCity,toCountry)]);
+  if(!a||!b)return{roadKm:0,straightKm:0};
+  let straight=hav(a,b);
+  try{
+    let r=await fetch(`https://router.project-osrm.org/route/v1/driving/${a.lon},${a.lat};${b.lon},${b.lat}?overview=false`);
+    let j=await r.json();
+    let meters=j.routes&&j.routes[0]&&j.routes[0].distance;
+    if(meters)return{roadKm:meters/1000,straightKm:straight};
+  }catch(e){}
+  return{roadKm:straight*1.2,straightKm:straight};
+}
+
+function editProfile(){
+  let p=db.profile;
+  openM('👤 Perfil do viajante',`<div class="notice">Cadastre os lugares que você já visitou e escolha como chegou lá. Em avião, o app estima horas de voo. Em carro, estima a distância rodoviária em km.</div>
+    <form id="pf"><div class="fields"><div class="field"><label>Origem padrão</label><input name="originCity" value="${esc(p.originCity||'')}"></div><div class="field"><label>País da origem</label><input name="originCountry" value="${esc(p.originCountry||'Brasil')}"></div></div><button class="btn primary" style="margin-top:12px">Salvar origem</button></form>
+    <div class="saved"><b>🌎 Adicionar viagem ao perfil</b>
+      <form id="df">
+        <div class="fields">
+          <div class="field"><label>Cidade visitada</label><input name="city" required></div>
+          <div class="field"><label>País</label><input name="country" required></div>
+          <div class="field"><label>Origem desta viagem</label><input name="fromCity" value="${esc(p.originCity||'')}"></div>
+          <div class="field"><label>País da origem</label><input name="fromCountry" value="${esc(p.originCountry||'Brasil')}"></div>
+          <div class="field full">
+            <label>Como você viajou?</label>
+            <div class="transport-toggle">
+              <label><input type="radio" name="transport" value="flight" checked> ✈️ Avião</label>
+              <label><input type="radio" name="transport" value="car"> 🚗 Carro</label>
+            </div>
+          </div>
+        </div>
+        <button class="btn" id="addDest" style="margin-top:12px">＋ Adicionar e calcular</button>
+      </form>
+      <div id="destList"></div>
+    </div>`);
+  destList();
+
+  $('pf').onsubmit=e=>{
+    e.preventDefault();let f=new FormData(e.target);
+    p.originCity=f.get('originCity');p.originCountry=f.get('originCountry');
+    save();home();editProfile();
+  };
+
+  $('df').onsubmit=async e=>{
+    e.preventDefault();
+    let f=new FormData(e.target),b=$('addDest');
+    b.disabled=true;b.textContent='Calculando…';
+    let city=f.get('city'),country=f.get('country'),fromCity=f.get('fromCity')||p.originCity,fromCountry=f.get('fromCountry')||p.originCountry,transport=f.get('transport')||'flight';
+    let item={city,country,fromCity,fromCountry,transport};
+    if(transport==='car'){
+      let r=await estimateRoad(fromCity,fromCountry,city,country);
+      item.roadKm=r.roadKm;
+      item.distanceKm=r.straightKm;
+    }else{
+      let r=await estimateFlight(fromCity,fromCountry,city,country);
+      item.flightHours=r.hours;
+      item.distanceKm=r.km;
+    }
+    p.destinations.push(item);save();b.disabled=false;b.textContent='＋ Adicionar e calcular';e.target.reset();destList();home();
+  };
+}
+
+function destList(){
+  let p=db.profile,l=$('destList');if(!l)return;
+  l.innerHTML=p.destinations.length?p.destinations.map((x,i)=>`<div class="item"><div class="itemmain"><b>${x.transport==='car'?'🚗':'✈️'} ${esc(x.city)}, ${esc(x.country)}</b><div class="muted">${esc(x.fromCity)} → ${esc(x.city)} • ${x.transport==='car'?`${Math.round(+x.roadKm||0).toLocaleString('pt-BR')} km estimados`:`${(+x.flightHours||0).toFixed(1)}h estimadas`}</div></div><button class="btn danger" data-dd="${i}">Excluir</button></div>`).join(''):'<p class="muted">Nenhuma viagem cadastrada.</p>';
+  document.querySelectorAll('[data-dd]').forEach(b=>b.onclick=()=>{p.destinations.splice(+b.dataset.dd,1);save();destList();home()});
+}
+
+function editTrip(){
+  if(!cur)return;
+  openM('Editar viagem',`<form id="tf"><div class="fields"><div class="field"><label>Nome</label><input name="name" value="${esc(cur.name)}"></div><div class="field"><label>Emoji</label><input name="emoji" value="${esc(cur.emoji)}"></div><div class="field"><label>Datas</label><input name="dates" value="${esc(cur.dates)}"></div><div class="field"><label>Destino(s)</label><input name="places" value="${esc(cur.places)}"></div><div class="field"><label>Início da viagem</label><input name="startDate" type="datetime-local" value="${esc(cur.startDate||'')}"></div><div class="field"><label>Orçamento</label><input name="budget" type="number" value="${cur.budget||0}"></div></div><button class="btn primary" style="margin-top:12px">Salvar</button></form>`);
+  $('tf').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target);cur.name=f.get('name');cur.emoji=f.get('emoji');cur.dates=f.get('dates');cur.places=f.get('places');cur.startDate=f.get('startDate');cur.budget=+f.get('budget')||0;save();modal.classList.remove('open');home();renderTrip();tick()};
+}
+
+function newTrip(){
+  openM('＋ Nova viagem',`<form id="nf"><div class="fields"><div class="field"><label>Nome</label><input name="name" required></div><div class="field"><label>Emoji</label><input name="emoji" value="✈️"></div><div class="field"><label>Datas</label><input name="dates"></div><div class="field"><label>Destino(s)</label><input name="places"></div><div class="field full"><label>Início da viagem</label><input name="startDate" type="datetime-local" required><div class="muted">Essa data define automaticamente a contagem regressiva da próxima viagem.</div></div></div><button class="btn primary" style="margin-top:12px">Criar viagem</button></form>`);
+  $('nf').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target),t={id:'t'+Date.now(),name:f.get('name'),emoji:f.get('emoji')||'✈️',dates:f.get('dates'),places:f.get('places'),startDate:f.get('startDate'),status:'Planejada',budget:0,it:[],mods:{compras:[],gastos:[],passeios:[],restaurantes:[],reservas:[],notas:[]}};db.trips.push(t);save();modal.classList.remove('open');home();openTrip(t.id)};
+}
+
+$('newTrip').onclick=newTrip;
+$('addTrip').onclick=newTrip;
+$('editProfile').onclick=editProfile;
+$('back').onclick=()=>{show('home');home()};
+$('editTrip').onclick=editTrip;
+$('addEvent').onclick=addEvent;
+$('quick').onclick=()=>cur?editTrip():editProfile();
+
+save();
+home();
+</script>
+</body>
+</html>
