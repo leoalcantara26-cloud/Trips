@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#171717">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Minhas Viagens">
-<title>Minhas Viagens — V2.3</title>
+<title>Minhas Viagens — V2.4</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#f5f3ef;color:#181818;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
@@ -70,7 +70,10 @@ db.profile=db.profile||deep(base.profile);db.profile.destinations=db.profile.des
  // V2.3: reservas confirmadas e controle do aluguel de carro.
  add(texas,'reservas',{item:'Holiday Inn Austin – Town Lake',data:'20–24/12/2026 • 4 noites',obs:'Confirmado • R$ 1.667 • 2 pessoas • sem café da manhã • estacionamento gratuito'},x=>/Holiday Inn Austin/i.test(x.item));
  add(texas,'reservas',{item:'Passagem Austin → Dallas → Orlando',data:'24/12/2026 • saída cedo',obs:'Comprada • 2 pessoas • classe executiva nos dois trechos • R$ 2.871,84'},x=>/Passagem Austin|Austin.*Dallas.*Orlando|AUS.*MCO/i.test(x.item));
- add(texas,'reservas',{item:'Aluguel de carro — Texas',data:'20–24/12/2026 • datas a confirmar',obs:'Adicionar locadora, modelo, retirada, devolução, valor e confirmação. Valor ainda não informado; não contabilizado nos gastos.'},x=>/Aluguel de carro|Locação de carro/i.test(x.item));
+ add(texas,'reservas',{item:'Aluguel de carro — Alamo',data:'20–24/12/2026 • horários a confirmar',obs:'Locadora Alamo • R$ 1.827,22 • retirada, devolução e modelo a confirmar'},x=>/Aluguel de carro|Locação de carro/i.test(x.item));
+ const carRental=texas.mods.reservas.find(x=>/Aluguel de carro|Locação de carro/i.test(x.item));
+ if(carRental){carRental.item='Aluguel de carro — Alamo';carRental.obs='Locadora Alamo • R$ 1.827,22 • retirada, devolução e modelo a confirmar';}
+ add(texas,'gastos',{item:'Aluguel de carro — Alamo',valor:1827.22,cat:'Transporte',obs:'Aluguel informado • R$ 1.827,22 • 20–24/12/2026 (horários a confirmar)'},x=>/Aluguel de carro|Locação de carro|Alamo/i.test(x.item));
 
  add(texas,'passeios',{item:'Cavalgada em Bandera — Bandera Historical Rides',data:'22/12/2026 (roteiro previsto; confirmar reserva)',preco:'US$ 248,04 / casal',obs:'2 × US$ 124,02 • valor planejado; não lançar como gasto pago sem confirmação'},x=>/Cavalgada em Bandera/i.test(x.item));
  add(texas,'notas',{item:'Orçamento local Texas',obs:'US$ 500 para alimentação, gasolina, estacionamento e pequenos gastos do casal, separado de compras e passeios.'},x=>/Orçamento local Texas/i.test(x.item));
